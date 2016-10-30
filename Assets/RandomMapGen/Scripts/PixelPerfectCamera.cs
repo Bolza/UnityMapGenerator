@@ -26,4 +26,11 @@ public class PixelPerfectCamera : MonoBehaviour {
 		}
 
 	}
+
+	public static float RoundToNearestPixel(float unityUnits, Camera viewingCamera) {
+		
+		float screenRateo = Screen.height / (viewingCamera.orthographicSize * 2);
+		float valueInPixels = Mathf.Round(screenRateo * unityUnits);
+		return valueInPixels / screenRateo;
+	}
 }
