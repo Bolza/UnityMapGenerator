@@ -32,7 +32,10 @@ public class RandomMapTester : MonoBehaviour {
 
 	void CreateGrid() {
 		clearMap ();
+
+		// Loading sprite map
 		Sprite[] sprites = Resources.LoadAll<Sprite> (islandTrexture.name);
+
 		var total = map.tiles.Length;
 		var maxCols = map.coloumns;
 		var cols = 0;
@@ -48,11 +51,16 @@ public class RandomMapTester : MonoBehaviour {
 			go.name = "Tile" + i;
 			go.transform.SetParent (mapContainer.transform);
 			go.transform.position = new Vector2 (x, y);
-			  
-			var spriteId = 0;
-			SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
-			sr.sprite = sprites [spriteId]; 
 
+			// Choose which n sprite from sprite-map
+			var tile = map.tiles[i];
+			var spriteId = tile.autotileId;
+			if (spriteId >= 0) {
+				SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
+				sr.sprite = sprites [spriteId]; 
+			}
+
+			// Go to new row if this is last coloumn
 			if (cols == maxCols - 1) {
 				row++;
 			}
