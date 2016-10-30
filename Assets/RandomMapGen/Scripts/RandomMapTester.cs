@@ -16,6 +16,7 @@ public class RandomMapTester : MonoBehaviour {
 	[Header("Decorate Map")]
 	[Range(0, 0.9f)]
 	public float erodePercent = 0.5f;
+	public int erodeIterations = 2;
 
 	[Space]
 	[Header("Visualize Map")]
@@ -31,7 +32,7 @@ public class RandomMapTester : MonoBehaviour {
 	// Update is called once per frame
 	public void MakeMap () {
 		map.NewMap (mapWidth, mapHeight);
-		map.createIsland (erodePercent);
+		map.createIsland (erodePercent, erodeIterations);
 		CreateGrid ();
 	}
 

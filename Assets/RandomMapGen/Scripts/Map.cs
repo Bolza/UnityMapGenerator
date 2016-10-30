@@ -14,9 +14,12 @@ public class Map {
 	}
 
 	public void createIsland(
-		float erodePercent
+		float erodePercent,
+		int erodeIterations
 	) {
-		decorateTiles(coastTiles, erodePercent, TileType.empty);
+		for (int i = 0; i < erodeIterations; i++) {
+			decorateTiles(coastTiles, erodePercent, TileType.empty);
+		}
 	}
 	public void NewMap(int width, int height) {
 		coloumns = width;
@@ -64,11 +67,21 @@ public class Map {
 	private void decorateTiles(Tile[] tiles, float percent, TileType type) {
 		// Get an int number that is the percentage on the total 
 		var total = Mathf.FloorToInt (tiles.Length * percent);
+		randomizeTileArray (tiles);
 		for (int i = 0; i < total; i++) {
 			var tile = tiles [i];
 			if (type == TileType.empty)
 				tile.ClearNeighbours ();
 			tile.autotileId = (int)type;
+		}
+	}
+
+	public void randomizeTileArray (Tile[] tiles) {
+		for (int i = 0; i < tiles.Length; i++) {
+			var tmp = tiles [i];
+			var r = Random.Range (i, tiles.Length);
+			tiles [i] = tiles [r];
+			tiles [r] = tmp;
 		}
 	}
 
