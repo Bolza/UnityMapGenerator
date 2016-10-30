@@ -23,6 +23,13 @@ public class RandomMapTester : MonoBehaviour {
 	public float mountainPercent  = .2f;
 	[Range(0, 0.9f)]
 	public float hillPercent  = .2f;
+	[Range(0, 0.9f)]
+	public float townPercent  = .05f;
+	[Range(0, 0.9f)]
+	public float monsterPercent  = .1f;
+	[Range(0, 0.9f)]
+	public float lakePercent  = .05f;
+
 
 	[Space]
 	[Header("Visualize Map")]
@@ -38,8 +45,18 @@ public class RandomMapTester : MonoBehaviour {
 	// Update is called once per frame
 	public void MakeMap () {
 		map.NewMap (mapWidth, mapHeight);
-		map.createIsland (erodePercent, erodeIterations, treePercent, mountainPercent, hillPercent);
+		map.createIsland (
+			erodePercent, 
+			erodeIterations, 
+			treePercent, 
+			mountainPercent, 
+			hillPercent, 
+			townPercent, 
+			monsterPercent,
+			lakePercent
+		);
 		CreateGrid ();
+		CenterMapOnTile (map.playerTile.id);
 	}
 
 	void CreateGrid() {
@@ -87,5 +104,11 @@ public class RandomMapTester : MonoBehaviour {
 		}
 	}
 
-
+	void CenterMapOnTile(int index ){
+		var camPos = Camera.main.transform.position;
+		var width = map.coloumns;
+		camPos.x = (index % width) * tileSize.x;
+		camPos.y = -((index / width) * tileSize.y);
+		Camera.main.transform.position = camPos;
+	}
 }
