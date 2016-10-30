@@ -30,11 +30,9 @@ public class RandomMapTester : MonoBehaviour {
 	[Range(0, 0.9f)]
 	public float lakePercent  = .05f;
 
-
 	[Space]
 	[Header("Visualize Map")]
 	public Texture2D islandTrexture;
-
 
 	public Map map;
 	// Use this for initialization

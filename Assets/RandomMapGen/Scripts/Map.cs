@@ -7,7 +7,8 @@ public class Map {
 	public int coloumns;
 	public int rows;
 	public enum TileType { 
-		empty = -1, 
+		empty = -1,
+		single = 0,
 		grass = 15, 
 		tree = 16, 
 		hill = 17, 
@@ -18,7 +19,7 @@ public class Map {
 	};
 	public Tile[] coastTiles {
 		get {
-			return tiles.Where (t => t.autotileId < 15).ToArray();
+			return tiles.Where (t => t.autotileId < (int)TileType.grass && t.autotileId > -1).ToArray();
 		}
 	}
 	public Tile[] landTiles {
@@ -29,6 +30,20 @@ public class Map {
 	public Tile playerTile {
 		get {
 			return tiles.FirstOrDefault (t => t.autotileId == (int)TileType.castle);
+		}
+	}
+	public Tile[] singleTiles {
+		get {
+			return tiles.Where (t => t.autotileId < (int)TileType.single).ToArray();
+		}
+	}
+	public Tile[] tooSmallTiles {
+		get {
+			return coastTiles.Where (t => {
+				var howManyCenterTiles = t.neighbors.Where(n => n != null && n.autotileId >= (int)TileType.grass );
+				return howManyCenterTiles.ToArray().Length < 1;
+			})
+			.ToArray();
 		}
 	}
 
@@ -46,6 +61,7 @@ public class Map {
 		for (int i = 0; i < erodeIterations; i++) {
 			decorateTiles(coastTiles, erodePercent, TileType.empty);
 		}
+		decorateTiles (tooSmallTiles, 1, TileType.empty);
 
 		createPlayerPosition ();
 
@@ -54,6 +70,8 @@ public class Map {
 		decorateTiles (landTiles, mountainPercent, TileType.mountain);
 		decorateTiles (landTiles, townPercent, TileType.town);
 		decorateTiles (landTiles, monsterPercent, TileType.monster);
+
+
 	}
 
 	private void createPlayerPosition() {
