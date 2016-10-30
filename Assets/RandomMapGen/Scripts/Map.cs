@@ -6,7 +6,7 @@ public class Map {
 	public Tile[] tiles;
 	public int coloumns;
 	public int rows;
-	public enum TileType { empty = -1, grass = 15 };
+	public enum TileType { empty = -1, grass = 15, tree = 16, hill = 17, mountain = 18 };
 	public Tile[] coastTiles {
 		get {
 			return tiles.Where (t => t.autotileId < 15).ToArray();
@@ -15,12 +15,25 @@ public class Map {
 
 	public void createIsland(
 		float erodePercent,
-		int erodeIterations
+		int erodeIterations,
+		float treePercent,
+		float mountainPercent,
+		float hillPercent
 	) {
 		for (int i = 0; i < erodeIterations; i++) {
 			decorateTiles(coastTiles, erodePercent, TileType.empty);
 		}
+		decorateTiles (landTiles, treePercent, TileType.tree);
+		decorateTiles (landTiles, hillPercent, TileType.hill);
+		decorateTiles (landTiles, mountainPercent, TileType.mountain);
 	}
+
+	public Tile[] landTiles{
+		get {
+			return tiles.Where (t => t.autotileId == (int)TileType.grass).ToArray();
+		}
+	}
+
 	public void NewMap(int width, int height) {
 		coloumns = width;
 		rows = height;

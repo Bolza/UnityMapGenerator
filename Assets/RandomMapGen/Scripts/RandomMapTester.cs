@@ -17,6 +17,12 @@ public class RandomMapTester : MonoBehaviour {
 	[Range(0, 0.9f)]
 	public float erodePercent = 0.5f;
 	public int erodeIterations = 2;
+	[Range(0, 0.9f)]
+	public float treePercent = .2f;
+	[Range(0, 0.9f)]
+	public float mountainPercent  = .2f;
+	[Range(0, 0.9f)]
+	public float hillPercent  = .2f;
 
 	[Space]
 	[Header("Visualize Map")]
@@ -32,7 +38,7 @@ public class RandomMapTester : MonoBehaviour {
 	// Update is called once per frame
 	public void MakeMap () {
 		map.NewMap (mapWidth, mapHeight);
-		map.createIsland (erodePercent, erodeIterations);
+		map.createIsland (erodePercent, erodeIterations, treePercent, mountainPercent, hillPercent);
 		CreateGrid ();
 	}
 
