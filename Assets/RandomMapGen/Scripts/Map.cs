@@ -1,11 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class Map {
 	public Tile[] tiles;
 	public int coloumns;
 	public int rows;
+	public enum TileType { empty = -1, grass = 15 };
+	public Tile[] coastTiles {
+		get {
+			return tiles.Where (t => t.autotileId < 15).ToArray();
+		}
+	}
 
+	public void createIsland(
+		float erodePercent
+	) {
+		decorateTiles(coastTiles, erodePercent, TileType.empty);
+	}
 	public void NewMap(int width, int height) {
 		coloumns = width;
 		rows = height;
@@ -48,4 +60,16 @@ public class Map {
 			}
 		}
 	}
+
+	private void decorateTiles(Tile[] tiles, float percent, TileType type) {
+		// Get an int number that is the percentage on the total 
+		var total = Mathf.FloorToInt (tiles.Length * percent);
+		for (int i = 0; i < total; i++) {
+			var tile = tiles [i];
+			if (type == TileType.empty)
+				tile.ClearNeighbours ();
+			tile.autotileId = (int)type;
+		}
+	}
+
 }

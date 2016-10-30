@@ -13,6 +13,11 @@ public class RandomMapTester : MonoBehaviour {
 	public Vector2 tileSize = new Vector2(16, 16);
 
 	[Space]
+	[Header("Decorate Map")]
+	[Range(0, 0.9f)]
+	public float erodePercent = 0.5f;
+
+	[Space]
 	[Header("Visualize Map")]
 	public Texture2D islandTrexture;
 
@@ -26,7 +31,7 @@ public class RandomMapTester : MonoBehaviour {
 	// Update is called once per frame
 	public void MakeMap () {
 		map.NewMap (mapWidth, mapHeight);
-		Debug.Log ("created");
+		map.createIsland (erodePercent);
 		CreateGrid ();
 	}
 

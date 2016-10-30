@@ -15,6 +15,28 @@ public class Tile {
 		CalculateAutotileId ();
 	}
 
+	public void RemoveNeighbour(Tile tile) {
+		var total = neighbors.Length;
+		for (int i = 0; i < total; i++) {
+			if (neighbors [i] != null && neighbors [i].id == tile.id) {
+				neighbors [i] = null;
+			}
+		}
+		CalculateAutotileId ();
+	}
+
+	public void ClearNeighbours() {
+		var total = neighbors.Length;
+		for (int i = 0; i < total; i++) {
+			var neTile = neighbors [i];
+			if (neTile != null) {
+				neTile.RemoveNeighbour (this);
+				neighbors [i] = null;
+			}
+		}
+		CalculateAutotileId ();
+	}
+
 	private void CalculateAutotileId() {
 		var sideValues = new StringBuilder ();
 		foreach (Tile tile in neighbors) {
